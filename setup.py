@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 import random
 #puts every message into one json
-def getSuperJSON():
+def getSuperJSON(name = "super.json"):
     path = "./package/messages/"
     #iterate over the directories if its a directory (instead of regular looping)
     subdirectories = [os.path.join(path, subdir + "/messages.json") for subdir in os.listdir(path) if os.path.isdir(os.path.join(path, subdir))]
@@ -15,7 +15,7 @@ def getSuperJSON():
         with open(x, 'r', encoding='utf-8') as infile:
             superJson.extend(json.load(infile))
 
-    with open('super.json', 'w', encoding='utf-8') as output_file:
+    with open(name, 'w', encoding='utf-8') as output_file:
         json.dump(superJson, output_file)
 #getSuperJSON()
     
@@ -28,7 +28,46 @@ def getContents():
     content = [item['Contents']for item in data]
     return content
 
+#gets attachments of message
+def getAttachments():
+    with open('./super.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    attachments = [info['Attachments']for info in data]
+    return attachments
 
+def attachmentSetup(fun = False):
+    #removes all non attachments for fun
+
+    attachments = getAttachments()
+    attachmentDict = defaultdict(int)
+    for x in range(len(attachments)-1):
+        value = attachments[x]
+        attachmentDict[value] +=1
+    if fun:
+        attachmentDict.pop('', None)
+
+    return attachmentDict
+
+def predictAttachment(attachmentDictionary):
+
+    links = list(attachmentDictionary.keys())
+    probability = list(attachmentDictionary.values())
+
+    attachment = random.choices(links, weights=probability, k=1)
+    return attachment
+
+def saveAttachGram(attachments, file):
+    with open(file, 'w', encoding='utf-8') as file:
+        json.dump(attachments, file)
+
+def loadAttachGram(file):
+    with open(file, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        return data
+    
+
+
+# saveAttachGram(attachmentSetup(True), "attachments.json")
 
 #regexs to remove links, and split by the space and also returns with start and end of sentence
 def tokenize(text):
@@ -118,7 +157,32 @@ def predict_next_word(ngram_model, previous_word):
 
 # ngram_model = setup()
 # saveNgram(dict(ngram_model), "nGram.json")
+
+#runs all the setups 
+def superSetUp(gramFileName = "", attachmentFileName = "", superName = "", attachmentCoolness = False):
+    if not not superName:
+        #makes a json with all the messages
+        getSuperJSON(superName)
+
+    #gets content from superJSON
+    if not not gramFileName:
+        #sets up the nested dictionary of the ngram
+        nGram = setup()
+        #saves
+        saveNgram(nGram, gramFileName)
+
+    if not not attachmentFileName:
+        #sets up the dictionary of the attachments // also a flag if it's cool or not (will always give an attachment and not blank)
+        aGram = attachmentSetup(attachmentCoolness)
+        #saves
+        saveAttachGram(aGram, attachmentFileName)
+
+# superSetUp("", "", "superTest.json")
+
+
 ngram_model = loadNgram("nGram.json")
+attachGram_Model = loadAttachGram('attachments.json')
+
 # Example: predict the next word after "<s>"
 nextWord = "<s>"
 sentence = ""
@@ -127,5 +191,8 @@ while not nextWord == "</s>":
     nextWord = predict_next_word(ngram_model, nextWord)
     # print(nextWord)
 sentence = sentence[5:]
+
+att = predictAttachment(attachGram_Model)
 print(sentence)
+print(att)
 # print(next_word)
