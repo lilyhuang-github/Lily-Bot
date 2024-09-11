@@ -85,7 +85,18 @@ def setup():
         ngram_model[context][next_word] += 1
     return ngram_model
 
+#saves ngram to file
+def saveNgram(nGramModel, file):
+    with open(file, 'w', encoding='utf-8') as file:
+        json.dump(nGramModel, file)
 
+#loads the ngram from file
+def loadNgram(file):
+    with open(file, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        return defaultdict(lambda: defaultdict(int), data)
+
+#predicts the next word
 def predict_next_word(ngram_model, previous_word):
     #access the dictionaries key value pair
     next_word_frequencies = ngram_model.get(previous_word, {})
@@ -105,14 +116,16 @@ def predict_next_word(ngram_model, previous_word):
     next_word = random.choices(words, weights=weights, k=1)[0]
     return next_word
 
-ngram_model = setup()
+# ngram_model = setup()
+# saveNgram(dict(ngram_model), "nGram.json")
+ngram_model = loadNgram("nGram.json")
 # Example: predict the next word after "<s>"
 nextWord = "<s>"
 sentence = ""
 while not nextWord == "</s>":
     sentence += " " + nextWord
     nextWord = predict_next_word(ngram_model, nextWord)
-    print(nextWord)
-
+    # print(nextWord)
+sentence = sentence[5:]
 print(sentence)
 # print(next_word)
