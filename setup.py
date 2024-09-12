@@ -3,6 +3,7 @@ import json
 import re
 from collections import defaultdict
 import random
+from flask import Flask, jsonify, request
 #puts every message into one json
 def getSuperJSON(name = "super.json"):
     path = "./package/messages/"
@@ -54,6 +55,7 @@ def predictAttachment(attachmentDictionary):
     probability = list(attachmentDictionary.values())
 
     attachment = random.choices(links, weights=probability, k=1)
+    attachment = attachment[0]
     return attachment
 
 def saveAttachGram(attachments, file):
@@ -90,6 +92,8 @@ def setup():
     # print(tokens)
 
     def generate_ngrams(tokens, n):
+#removes the potential of an empty message if fun
+
         # ngrams = zip(*[tokens[i:] for i in range(n)])
         slices = [tokens[i:] for i in range(n)]
         #iterates through to slices the n'th index
@@ -122,6 +126,8 @@ def setup():
         context = tokens[i]
         next_word = tokens[i + 1]
         ngram_model[context][next_word] += 1
+    if "</s>" in ngram_model["<s>"]: #removes the possibility of an empty sentence
+        del ngram_model["<s>"]["</s>"]
     return ngram_model
 
 #saves ngram to file
@@ -180,19 +186,34 @@ def superSetUp(gramFileName = "", attachmentFileName = "", superName = "", attac
 # superSetUp("", "", "superTest.json")
 
 
-ngram_model = loadNgram("nGram.json")
-attachGram_Model = loadAttachGram('attachments.json')
+def predictSentence(ngram_model):
+    # ngram_model = loadNgram("nGram.json")
+    # Example: predict the next word after "<s>"
+    nextWord = "<s>"
+    sentence = ""
+    while not nextWord == "</s>":
+        sentence += " " + nextWord
+        nextWord = predict_next_word(ngram_model, nextWord)
+        # print(nextWord)
+    sentence = sentence[5:]
+    return sentence
 
-# Example: predict the next word after "<s>"
-nextWord = "<s>"
-sentence = ""
-while not nextWord == "</s>":
-    sentence += " " + nextWord
-    nextWord = predict_next_word(ngram_model, nextWord)
-    # print(nextWord)
-sentence = sentence[5:]
+def predictDiscordMessage(ngram_model, attachment_model):
+    sentence = predictSentence(ngram_model)
+    
+    attachment = predictAttachment(attachment_model)
+    ret = {}
+    ret["message"] = sentence
+    ret["attachment"] = attachment
+    return ret
 
-att = predictAttachment(attachGram_Model)
-print(sentence)
-print(att)
+
+
+ngram = loadNgram("nGram.json")
+att = loadAttachGram("attachments.json")
+
+print(predictDiscordMessage(ngram, att))
+
+# print(predictSentence(ngram))
+
 # print(next_word)
