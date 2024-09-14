@@ -209,10 +209,10 @@ def predictDiscordMessage(ngram_model, attachment_model):
 
 
 
-ngram = loadNgram("nGram.json")
-att = loadAttachGram("attachments.json")
+# ngram = loadNgram("nGram.json")
+# att = loadAttachGram("attachments.json")
 
-print(predictDiscordMessage(ngram, att))
+# print(predictDiscordMessage(ngram, att))
 
 # print(predictSentence(ngram))
 
