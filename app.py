@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 #pip freeze > requirements.txt
+
+#testinit
 load_dotenv()
 apiKey = os.getenv("API_KEY")
 
