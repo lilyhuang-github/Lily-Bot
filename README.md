@@ -2,6 +2,10 @@
 
 ### This is a ngram language model based on myself that utilises as few pre-made libraries as possible. This README can also guide you through setting up your own ngram model using your own discord package.
 
+## Quick Start
+pip install -r requirements.txt
+gunicorn -w 4 app:app
+
 ## Overview
 
 ### This repository contains an n-gram language model that I trained using my own discord messages. N-gram models work by predicting the next word based on an "n" number of words. 
