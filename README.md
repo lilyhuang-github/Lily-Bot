@@ -26,4 +26,5 @@ _Daniel Jurafsky and James H. Martin. 2024. Speech and Language Processing: An I
 
 
 The model and messages have been removed but there is an implementation below:
-https://lily-bot-implementation.onrender.com/
+[GoogleCloud
+](https://lily-bot-352988256386.us-central1.run.app/)
