@@ -4,6 +4,7 @@
 
 ## Quick Start
 pip install -r requirements.txt
+flask run
 gunicorn -w 4 app:app
 
 ## Overview
