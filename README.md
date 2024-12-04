@@ -3,9 +3,11 @@
 ### This is a ngram language model based on myself that utilises as few pre-made libraries as possible. This README can also guide you through setting up your own ngram model using your own discord package.
 
 ## Quick Start
-#pip install -r requirements.txt
-#flask run
-#gunicorn -w 4 app:app
+pip install -r requirements.txt
+
+flask run
+
+gunicorn -w 4 app:app
 
 ## Overview
 
