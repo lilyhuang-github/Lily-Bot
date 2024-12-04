@@ -3,7 +3,6 @@ import json
 import re
 from collections import defaultdict
 import random
-from flask import Flask, jsonify, request
 #puts every message into one json
 def getSuperJSON(name = "super.json"):
     path = "./package/messages/"

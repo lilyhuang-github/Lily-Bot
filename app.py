@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 #pip freeze > requirements.txt
-
-#testinit
 load_dotenv()
 apiKey = os.getenv("API_KEY")
 
@@ -52,4 +50,4 @@ def evilPredict():
     return mes
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', debug=True, port=5100)
