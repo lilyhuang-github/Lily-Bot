@@ -1,30 +1,63 @@
+
 # Lily-Bot
 
-### This is a ngram language model based on myself that utilises as few pre-made libraries as possible. This README can also guide you through setting up your own ngram model using your own discord package.
+**Lily-Bot** is an n-gram language model based on my own Discord messages.  
+It is built to use as few pre-made libraries as possible. This README also guides you through setting up your own n-gram model using your preferred Discord package.
+
+---
 
 ## Quick Start
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+````
 
+Run the Flask app:
+
+```bash
 flask run
+```
 
+Or run with Gunicorn (for production):
+
+```bash
 gunicorn -w 4 app:app
+```
+
+---
 
 ## Overview
 
-### This repository contains an n-gram language model that I trained using my own discord messages. N-gram models work by predicting the next word based on an "n" number of words. 
+This repository contains an n-gram language model trained on my own Discord messages.
 
-A unigram: 1 word at a time
-A bigram: 2 words at a time
-A trigram: 3 words at a time
-Etc, etc.
+### What is an n-gram?
 
-So it looks back at the previous word, and then predicts based on probability of the model what the next word would be.
+N-gram models predict the next word based on the previous "n" words:
 
-I've derived a lot of my understanding off of the 3rd chapter of Speech and Language Processing by Daniel Jurafsky and James H. Martin
+* **Unigram**: 1 word at a time
+* **Bigram**: 2 words at a time
+* **Trigram**: 3 words at a time
 
-_Daniel Jurafsky and James H. Martin. 2024. Speech and Language Processing: An Introduction to Natural Language Processing, Computational Linguistics, and Speech Recognition with Language Models, 3rd edition. Online manuscript released August 20, 2024. https://web.stanford.edu/~jurafsky/slp3._
+The model looks at the previous word(s) and predicts the next word based on probabilities derived from the training data.
 
+---
 
-The model and messages have been removed but there is an implementation below:
-[GoogleCloud
-](https://lily-bot-352988256386.us-central1.run.app/)
+### References
+
+My understanding of n-gram models is largely derived from:
+
+**Daniel Jurafsky and James H. Martin (2024).**
+*Speech and Language Processing: An Introduction to Natural Language Processing, Computational Linguistics, and Speech Recognition with Language Models, 3rd edition.*
+Online manuscript released August 20, 2024.
+[https://web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3)
+
+---
+
+### Demo
+
+The model and original messages have been removed for privacy.
+You can try an implementation here:
+[Google Cloud Demo](https://lily-bot-352988256386.us-central1.run.app/)
+
